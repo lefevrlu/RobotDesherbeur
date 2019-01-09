@@ -102,31 +102,53 @@
 
   <joint type="continuous" name="left_top_wheel_hinge">
     <origin xyz="0.1 0.13 0.1" rpy="0 0 0"/>
-    <child link="left_wheel"/>
+    <child link="left_top_wheel"/>
     <parent link="chassis"/>
     <axis xyz="0 1 0"/>
   </joint>
 
   <joint type="continuous" name="right_top_wheel_hinge">
     <origin xyz="0.1 -0.13 0.1" rpy="0 0 0"/>
-    <child link="left_wheel"/>
+    <child link="right_top_wheel"/>
     <parent link="chassis"/>
     <axis xyz="0 1 0"/>
   </joint>
 
   <joint type="continuous" name="left_bottom_wheel_hinge">
     <origin xyz="-0.1 0.13 0.1" rpy="0 0 0"/>
-    <child link="left_wheel"/>
+    <child link="left_bottom_wheel"/>
     <parent link="chassis"/>
     <axis xyz="0 1 0"/>
   </joint>
 
   <joint type="continuous" name="right_bottom_wheel_hinge">
     <origin xyz="-0.1 -0.13 0.1" rpy="0 0 0"/>
-    <child link="left_wheel"/>
+    <child link="right_bottom_wheel"/>
     <parent link="chassis"/>
     <axis xyz="0 1 0"/>
   </joint>
 
+  <link name="arm">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+      <geometry>
+        <cylinder radius="0.05" length="0.3"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+      <geometry>
+        <cylinder radius="0.1" length="0.05"/>
+      </geometry>
+    </visual>
+    <xacro:default_inertial mass="0.2"/>
+  </link>
+
+  <joint type="continuous" name="arm_hinge">
+    <origin xyz="1.15 1.15 0.1" rpy="0 0 0"/>
+    <child link="arm"/>
+    <parent link="chassis"/>
+    <axis xyz="0 1 0"/>
+  </joint>
 
 </robot>
