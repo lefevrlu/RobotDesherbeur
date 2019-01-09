@@ -7,7 +7,7 @@ lien vers la page waffle: https://waffle.io/LEPAAV/RobotDesherbeur/join
 
 ___
 
-#<center> Utilisation de ***Git*** </center>
+# <center> Utilisation de ***Git*** </center>
 
 
 
