@@ -6,3 +6,4 @@
 <param name="robot_description" command="$(find xacro)/xacro --inorder $(find desherbor_ensta)/urdf/robot_desherbor.urdf.xacro"/>
 
 <node name="spawn_model" pkg="gazebo_ros" args="-urdf -model robot -param robot_description" type="spawn_model"/>
+</launch>

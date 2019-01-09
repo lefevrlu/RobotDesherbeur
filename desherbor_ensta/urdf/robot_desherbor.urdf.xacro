@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-
-<robot name = "desherbor_ensta" xmlns:xacro="http://ros.org/wiki/wacro">
+<robot name = "desherbor_ensta" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find desherbor_ensta)/urdf/robot_desherbor.wheels.xacro"/>
 
