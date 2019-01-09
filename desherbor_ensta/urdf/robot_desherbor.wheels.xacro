@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<robot name="robot_desherbor_wheels" xlmns:xacro="http://ros.org/wiki/xacro">
+
+  <gazebo reference = "chassis">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <gazebo reference = "left_top_wheel">
+    <mu1>1.2</mu1>
+    <mu2>1.2</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+
+  <gazebo reference = "right_top_wheel">
+    <mu1>1.2</mu1>
+    <mu2>1.2</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+
+  <gazebo reference = "left_bottom_wheel">
+    <mu1>1.2</mu1>
+    <mu2>1.2</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+
+  <gazebo reference = "right_bottom_wheel">
+    <mu1>1.2</mu1>
+    <mu2>1.2</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
