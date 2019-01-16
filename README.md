@@ -45,6 +45,9 @@ On change dans un premier temps de branche, on va sur son master pour que celui-
 On récupère les modifications upstream. Pour cela, exécuter la commande :
 ***git pull upstream master***
 
+On met à jour notre dépôt distant *origin* : 
+***git push origin master***
+
 On change de branche pour ajouter les dernières fonctionnalités à notre branche :
 ***git checkout mabranche***
 
