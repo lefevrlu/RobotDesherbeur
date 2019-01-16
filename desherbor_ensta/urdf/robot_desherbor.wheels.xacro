@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="robot_desherbor_wheels" xlmns:xacro="http://ros.org/wiki/xacro">
+<robot name="robot_desherbor_wheels" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <gazebo reference = "chassis">
     <material>Gazebo/DarkGrey</material>
@@ -44,3 +44,4 @@
     <maxVel>0.1</maxVel>
     <material>Gazebo/FlatBlack</material>
   </gazebo>
+</robot>
