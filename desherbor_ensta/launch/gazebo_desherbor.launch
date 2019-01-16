@@ -4,6 +4,14 @@
   </include>
 
 <param name="robot_description" command="$(find xacro)/xacro --inorder $(find desherbor_ensta)/urdf/robot_desherbor.urdf.xacro"/>
+<rosparam file="$(find desherbor_ensta)/config/desherbor_ensta_control.yaml" command="load"/>
 
 <node name="spawn_model" pkg="gazebo_ros" args="-urdf -model robot -param robot_description" type="spawn_model"/>
+
+<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/desherbor_ensta" args="joint_left_top_wheel joint_right_top_wheel joint_left_bottom_wheel joint_right_bottom_wheel joint_state_controller"/>
+
+<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+  <remap from="joint_states" to="/desherbor_ensta/joint_states"/>
+</node>
+
 </launch>
