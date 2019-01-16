@@ -33,6 +33,8 @@ Ajouter les modifications et suivre les fichiers créés : ***git add <some-file
 
 Enregistrer les modifications localement : ***git commit -m "mon commentaire"***
 
+Sauvegarder en ligne les modifications : ***git push origin mabranch***
+
 ## Étape 4
 
 On souhaite intégrer les dernières mises à jour du master distant avant de fusionner notre branche.
@@ -47,7 +49,7 @@ On change de branche pour ajouter les dernières fonctionnalités à notre branc
 ***git checkout mabranche***
 
 On récupère les dernières fonctionnalités sur notre branche :
-***git pull --rebase master***
+***git rebase master***
 
 ## Étape 5
 
