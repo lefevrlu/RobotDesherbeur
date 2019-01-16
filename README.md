@@ -54,12 +54,6 @@ On récupère les dernières fonctionnalités sur notre branche :
 Sauvegarder les modifications sur la branche distante de son dépôt:
 ***git push origin mabranche***
 
-On fusionne avec le master. Pour cela on va sur le master :
-***git checkout master***
-
-Puis on merge :
-***git merge mabranche***
-
 ## Étape 6
 
 Créer un pull request sur github !
