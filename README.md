@@ -54,7 +54,7 @@ On récupère les dernières fonctionnalités sur notre branche :
 ## Étape 5
 
 Sauvegarder les modifications sur la branche distante de son dépôt:
-***git push origin mabranche***
+***git push -f origin mabranche***
 
 ## Étape 6
 
