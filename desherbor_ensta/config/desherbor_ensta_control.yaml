@@ -19,3 +19,7 @@ desherbor_ensta:
     type: effort_controllers/JointPositionController
     joint: left_bottom_wheel_hinge
     pid:  {p: 100.0, i: 0.01, d: 10.0}
+  joint_arm:
+    type: effort_controllers/JointPositionController
+    joint: arm_hinge
+    pid:  {p: 100.0, i: 0.01, d: 10.0}

@@ -254,6 +254,17 @@
     </actuator>
   </transmission>
 
+  <transmission name="trans_arm">
+    <type> transmission_interface/SimpleTransmission</type>
+    <joint name="arm_hinge">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_actuator">
+      <mechanicalReduction>30</mechanicalReduction>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </actuator>
+  </transmission>
+
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
       <robotNamespace>/desherbor_ensta</robotNamespace>
