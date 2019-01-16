@@ -1,0 +1,21 @@
+desherbor_ensta:
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  joint_right_top_wheel:
+    type: effort_controllers/JointPositionController
+    joint: right_top_wheel_hinge
+    pid:  {p: 100.0, i: 0.01, d: 10.0}
+  joint_left_top_wheel:
+    type: effort_controllers/JointPositionController
+    joint: left_top_wheel_hinge
+    pid:  {p: 100.0, i: 0.01, d: 10.0}
+  joint_right_bottom_wheel:
+    type: effort_controllers/JointPositionController
+    joint: right_bottom_wheel_hinge
+    pid:  {p: 100.0, i: 0.01, d: 10.0}
+  joint_left_bottom_wheel:
+    type: effort_controllers/JointPositionController
+    joint: left_bottom_wheel_hinge
+    pid:  {p: 100.0, i: 0.01, d: 10.0}
