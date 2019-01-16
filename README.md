@@ -43,7 +43,7 @@ On change dans un premier temps de branche, on va sur son master pour que celui-
 ***git checkout master***
 
 On récupère les modifications upstream. Pour cela, exécuter la commande :
-***git pull --rebase upstream master***
+***git pull upstream master***
 
 On change de branche pour ajouter les dernières fonctionnalités à notre branche :
 ***git checkout mabranche***
