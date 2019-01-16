@@ -29,10 +29,10 @@
     <visual>
       <origin xyz="0 0 .1" rpy="0 0 0"/>
       <geometry>
-        <box size="0.3 0.3 0.1"/>
+        <box size="0.1 0.3 0.1"/>
       </geometry>
     </visual>
-    <xacro:default_inertial mass="2.0"/>
+    <xacro:default_inertial mass="4.0"/>
   </link>
 
   <link name="left_top_wheel">
@@ -129,25 +129,29 @@
 
   <link name="arm">
     <collision>
-      <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+      <origin xyz="0.2 0 0.2" rpy="0 1.56 0"/>
       <geometry>
-        <cylinder radius="0.05" length="0.3"/>
+        <cylinder radius="0.01" length="0.3"/>
       </geometry>
     </collision>
     <visual>
-      <origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
+      <origin xyz="0.2 0 0.2" rpy="0 1.56 0"/>
       <geometry>
-        <cylinder radius="0.1" length="0.05"/>
+        <cylinder radius="0.01" length="0.3"/>
       </geometry>
     </visual>
-    <xacro:default_inertial mass="0.2"/>
+    <xacro:default_inertial mass="0.1"/>
   </link>
 
+
   <joint type="continuous" name="arm_hinge">
-    <origin xyz="1.15 1.15 0.1" rpy="0 0 0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
     <child link="arm"/>
     <parent link="chassis"/>
-    <axis xyz="0 1 0"/>
+    <axis xyz="0 0 1"/>
   </joint>
+
+
+
 
 </robot>
