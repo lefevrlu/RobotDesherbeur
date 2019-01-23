@@ -1,0 +1,12 @@
+<launch>
+    <!-- Launch .world file-->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" value="$(find desherbor_ensta)/worlds/Cour.world"/>
+      <arg name="paused" value="true"/>
+    </include>
+
+    <node name="grass_spawner" pkg="desherbor_ensta" type="grass_spawner.py" output="screen">
+      <param name="chemin" value="$(find desherbor_ensta)/models/Herbe/model.sdf"/>
+      <param name="NbHerbe" value="25"/>
+    </node>
+</launch>
