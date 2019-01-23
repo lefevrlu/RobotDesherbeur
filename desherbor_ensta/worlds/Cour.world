@@ -13,17 +13,7 @@
     <include>
       <uri>model://Herbe</uri>
       <name>Herbe1</name>
-      <pose>-2.0 0 0 0 0 0</pose>
-    </include>
-    <include>
-      <uri>model://Herbe</uri>
-      <name>Herbe2</name>
-      <pose>-2.0 3 0 0 0 0</pose>
-    </include>
-    <include>
-      <uri>model://Herbe</uri>
-      <name>Herbe3</name>
-      <pose>-2.0 0 4 0 0 0</pose>
+      <pose>0 0 0 0 0 0</pose>
     </include>
   </world>
 </sdf>
