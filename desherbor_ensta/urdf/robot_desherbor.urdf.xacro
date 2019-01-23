@@ -206,17 +206,6 @@
     <origin xyz="0 0 0.075" rpy="0 0 0"/>
   </joint>
 
-<<<<<<< HEAD
-=======
-  <link name="camera">
-    <visual>
-      <geometry>
-        <sphere radius="0.01"/>
-      </geometry>
-    </visual>
-    <xacro:default_inertial mass="0.01"/>
-  </link>
-
   <joint name="camera_hinge" type="fixed">
     <child link="camera"/>
     <parent link="arm"/>
@@ -289,7 +278,4 @@
     </plugin>
   </gazebo>
 
-
-
->>>>>>> master
 </robot>
