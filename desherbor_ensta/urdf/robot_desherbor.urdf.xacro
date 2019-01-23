@@ -2,7 +2,10 @@
 <robot name = "desherbor_ensta" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find desherbor_ensta)/urdf/robot_desherbor.wheels.xacro"/>
-  <xacro:include filename="$(find desherbor_ensta)/urdf/robot_desherbor.camera.xacro"/>
+  <xacro:include filename="$(find desherbor_ensta)/urdf/robot.camera.xacro"/>
+  <xacro:include filename="$(find desherbor_ensta)/urdf/robot.laser.xacro"/>
+  <xacro:include filename="$(find desherbor_ensta)/urdf/robot.lidar.xacro"/>
+  <xacro:include filename="$(find desherbor_ensta)/urdf/robot.IMU.xacro"/>
 
   <xacro:macro name="default_inertial" params="mass">
     <inertial>
@@ -287,6 +290,20 @@
     </plugin>
   </gazebo>
 
+  <link name="imu_link">
+    <visual>
+      <origin xyz="0 0 -0.03" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.03" length="0.1"/>
+      </geometry>
+    </visual>
+    <xacro:default_inertial mass="0.1"/>
+  </link>
 
+  <joint name="imu_link_hinge" type="fixed">
+    <child link="imu_link"/>
+    <parent link="chassis"/>
+    <origin xyz="0 0 -0.03" rpy="0 0 0"/>
+  </joint>
 
 </robot>
