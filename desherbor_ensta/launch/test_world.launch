@@ -5,4 +5,8 @@
       <arg name="paused" value="true"/>
     </include>
 
+    <node name="grass_spawner" pkg="desherbor_ensta" type="grass_spawner.py" output="screen">
+      <param name="chemin" value="$(find desherbor_ensta)/models/Herbe/model.sdf"/>
+      <param name="NbHerbe" value="25"/>
+    </node>
 </launch>
