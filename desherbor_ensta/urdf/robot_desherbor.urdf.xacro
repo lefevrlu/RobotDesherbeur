@@ -2,7 +2,10 @@
 <robot name = "desherbor_ensta" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find desherbor_ensta)/urdf/robot_desherbor.wheels.xacro"/>
-  <xacro:include filename="$(find desherbor_ensta)/urdf/robot_desherbor.camera.xacro"/>
+  <xacro:include filename="$(find desherbor_ensta)/urdf/robot.camera.xacro"/>
+  <xacro:include filename="$(find desherbor_ensta)/urdf/robot.laser.xacro"/>
+  <xacro:include filename="$(find desherbor_ensta)/urdf/robot.lidar.xacro"/>
+  <xacro:include filename="$(find desherbor_ensta)/urdf/robot.IMU.xacro"/>
 
   <xacro:macro name="default_inertial" params="mass">
     <inertial>
@@ -98,15 +101,6 @@
       </geometry>
     </visual>
     <xacro:default_inertial mass="0.3"/>
-  </link>
-
-  <link name="camera">
-    <visual>
-      <geometry>
-        <sphere radius="0.01"/>
-      </geometry>
-    </visual>
-    <xacro:default_inertial mass="0.01"/>
   </link>
 
   <joint type="continuous" name="left_top_wheel_hinge">
@@ -212,8 +206,6 @@
     <origin xyz="0.2 0 0.1" rpy="0 0 0"/>
   </joint>
 
-
-
   <transmission name="trans_left_bottom_wheel">
     <type> transmission_interface/SimpleTransmission </type>
     <joint name="left_bottom_wheel_hinge">
@@ -225,7 +217,6 @@
     </actuator>
   </transmission>
 
-
   <transmission name="trans_right_bottom_wheel">
     <type> transmission_interface/SimpleTransmission </type>
     <joint name="right_bottom_wheel_hinge">
@@ -236,7 +227,6 @@
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </actuator>
   </transmission>
-
 
   <transmission name="trans_left_top_wheel">
     <type> transmission_interface/SimpleTransmission</type>
@@ -277,5 +267,26 @@
       <robotNamespace>/desherbor_ensta</robotNamespace>
     </plugin>
   </gazebo>
+
+  <link name="imu_link">
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.01"/>
+      </geometry>
+      <collision>
+        <geometry>
+          <cylinder radius="0.001" length="0.001"/>
+        </geometry>
+      </collision>
+    </visual>
+    <xacro:default_inertial mass="0.1"/>
+  </link>
+
+  <joint name="imu_link_hinge" type="fixed">
+    <child link="imu_link"/>
+    <parent link="chassis"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+  </joint>
 
 </robot>
