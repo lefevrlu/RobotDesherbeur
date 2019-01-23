@@ -3,7 +3,7 @@
 import rospy
 from gazebo_msgs.srv import SpawnModel, SpawnModelRequest
 import random
-from time import sleep
+import numpy as np
 
 rospy.init_node("grass_spawner")
 
@@ -19,10 +19,21 @@ rospy.wait_for_service('/gazebo/spawn_sdf_model')
 
 gazeboSpawnModel = rospy.ServiceProxy("/gazebo/spawn_sdf_model", SpawnModel)
 
+
+Name = []
+X=[]
+Y=[]
+Rayon=[]
 for i in range(NbHerbe):
     x = 10 * random.random() -5
     y = 10 * random.random()- 5
     rayon = 0.06*random.random() + 0.01
+
+    X.append(x)
+    Y.append(y)
+    Rayon.append(Rayon)
+
+
     strtochange = "<radius>"+str(rayon)+"</radius>"
     filesdf = filesdf.replace(strdebase,strtochange)
     strdebase = strtochange
