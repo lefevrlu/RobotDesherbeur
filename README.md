@@ -33,6 +33,8 @@ Ajouter les modifications et suivre les fichiers créés : ***git add <some-file
 
 Enregistrer les modifications localement : ***git commit -m "mon commentaire"***
 
+Sauvegarder en ligne les modifications : ***git push origin mabranch***
+
 ## Étape 4
 
 On souhaite intégrer les dernières mises à jour du master distant avant de fusionner notre branche.
@@ -41,24 +43,21 @@ On change dans un premier temps de branche, on va sur son master pour que celui-
 ***git checkout master***
 
 On récupère les modifications upstream. Pour cela, exécuter la commande :
-***git pull --rebase upstream master***
+***git pull upstream master***
+
+On met à jour notre dépôt distant *origin* : 
+***git push origin master***
 
 On change de branche pour ajouter les dernières fonctionnalités à notre branche :
 ***git checkout mabranche***
 
 On récupère les dernières fonctionnalités sur notre branche :
-***git pull --rebase master***
+***git rebase master***
 
 ## Étape 5
 
 Sauvegarder les modifications sur la branche distante de son dépôt:
-***git push origin mabranche***
-
-On fusionne avec le master. Pour cela on va sur le master :
-***git checkout master***
-
-Puis on merge :
-***git merge mabranche***
+***git push -f origin mabranche***
 
 ## Étape 6
 

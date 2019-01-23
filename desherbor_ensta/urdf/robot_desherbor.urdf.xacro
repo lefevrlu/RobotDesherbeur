@@ -2,6 +2,7 @@
 <robot name = "desherbor_ensta" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find desherbor_ensta)/urdf/robot_desherbor.wheels.xacro"/>
+  <xacro:include filename="$(find desherbor_ensta)/urdf/robot_desherbor.camera.xacro"/>
 
   <xacro:macro name="default_inertial" params="mass">
     <inertial>
@@ -99,18 +100,27 @@
     <xacro:default_inertial mass="0.3"/>
   </link>
 
+  <link name="camera">
+    <visual>
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+    </visual>
+    <xacro:default_inertial mass="0.01"/>
+  </link>
+
   <joint type="continuous" name="left_top_wheel_hinge">
     <origin xyz="0.1 0.13 0.1" rpy="0 0 0"/>
     <child link="left_top_wheel"/>
     <parent link="chassis"/>
-    <axis xyz="0 1 0"/>
+    <axis xyz="0 0 1"/>
   </joint>
 
   <joint type="continuous" name="right_top_wheel_hinge">
     <origin xyz="0.1 -0.13 0.1" rpy="0 0 0"/>
     <child link="right_top_wheel"/>
     <parent link="chassis"/>
-    <axis xyz="0 1 0"/>
+    <axis xyz="0 0 1"/>
   </joint>
 
   <joint type="continuous" name="left_bottom_wheel_hinge">
@@ -143,13 +153,19 @@
     <xacro:default_inertial mass="0.1"/>
   </link>
 
-
   <joint type="continuous" name="arm_hinge">
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <child link="arm"/>
     <parent link="chassis"/>
     <axis xyz="0 0 1"/>
   </joint>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link="chassis"/>
+    <child link="camera"/>
+    <origin xyz="0.1 0.0 0.1" rpy="0 0 0"/>
+  </joint>
+
 
   <link name="laser">
     <collision>
@@ -190,4 +206,90 @@
     <origin xyz="0 0 0.075" rpy="0 0 0"/>
   </joint>
 
+<<<<<<< HEAD
+=======
+  <link name="camera">
+    <visual>
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+    </visual>
+    <xacro:default_inertial mass="0.01"/>
+  </link>
+
+  <joint name="camera_hinge" type="fixed">
+    <child link="camera"/>
+    <parent link="arm"/>
+    <origin xyz="0.2 0 0.1" rpy="0 0 0"/>
+  </joint>
+
+
+
+  <transmission name="trans_left_bottom_wheel">
+    <type> transmission_interface/SimpleTransmission </type>
+    <joint name="left_bottom_wheel_hinge">
+      <hardwareInterface> EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="bottom_wheel_actuator">
+      <mechanicalReduction>50</mechanicalReduction>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </actuator>
+  </transmission>
+
+
+  <transmission name="trans_right_bottom_wheel">
+    <type> transmission_interface/SimpleTransmission </type>
+    <joint name="right_bottom_wheel_hinge">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="bottom_wheel_actuator">
+      <mechanicalReduction>50</mechanicalReduction>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </actuator>
+  </transmission>
+
+
+  <transmission name="trans_left_top_wheel">
+    <type> transmission_interface/SimpleTransmission</type>
+    <joint name="left_top_wheel_hinge">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+
+    <actuator name="top_wheel_actuator">
+      <mechanicalReduction>30</mechanicalReduction>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </actuator>
+  </transmission>
+
+  <transmission name="trans_right_top_wheel">
+    <type> transmission_interface/SimpleTransmission</type>
+    <joint name="right_top_wheel_hinge">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="top_wheel_actuator">
+      <mechanicalReduction>30</mechanicalReduction>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </actuator>
+  </transmission>
+
+  <transmission name="trans_arm">
+    <type> transmission_interface/SimpleTransmission</type>
+    <joint name="arm_hinge">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_actuator">
+      <mechanicalReduction>30</mechanicalReduction>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </actuator>
+  </transmission>
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/desherbor_ensta</robotNamespace>
+    </plugin>
+  </gazebo>
+
+
+
+>>>>>>> master
 </robot>
