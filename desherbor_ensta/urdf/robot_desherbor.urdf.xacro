@@ -22,14 +22,14 @@
     <collision>
       <origin xyz="0 0 .1" rpy="0 0 0"/>
       <geometry>
-        <box size="0.3 0.3 0.1"/>
+        <box size="0.1 0.3 0.1"/>
       </geometry>
     </collision>
 
     <visual>
       <origin xyz="0 0 .1" rpy="0 0 0"/>
       <geometry>
-        <box size="0.1 0.3 0.1"/>
+        <box size="0.3 0.3 0.1"/>
       </geometry>
     </visual>
     <xacro:default_inertial mass="4.0"/>
