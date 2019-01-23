@@ -56,23 +56,6 @@ def get_position(img):
 	r = get_radius(w,h)
 	return r,theta
 
-# p1 = (330,70)
-# p2 = (611,866)
-
-# x1, y1 = p1
-# x2, y2 = p2
-
-# npx = 960 # nombre de pixels sur l'axe x
-# npy = 600 # nombre de pixels sur l'axe y
-
-# h = abs(y2 - y1) # hauteur du cylindre
-# r*h+br # rayon en coordonnées polaire dans le repère du robot
-
-# ### Calcul de l'angle ###
-# aa = 1 # coeff proportionel pour l'angle
-# ba = 0 # biais linéraire pour l'angle
-# theta = aa*(x1+(x2-x1)/2-npx/2) + ba # angle en coordonnées polaire dans le repère du robot
-# print(r,theta)
 
 if __name__ == "__main__":
 	img = "cylindre3.jpg"
