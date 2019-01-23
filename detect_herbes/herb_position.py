@@ -1,8 +1,60 @@
 # -*- coding: utf-8 -*-
 
-from detecte_herbes import get_bounding_box
 import cv2
+import rospy
+import roslib
+import numpy as np
 
+from sensor_msgs.msg import CompressedImage
+from std_msgs.msg import Float64
+
+pub = None
+
+def get_bounding_box(img,disp = False):
+	"""
+	input:
+		img: adresse de l'image
+		disp: booléen, enregistre une image de l'object détecté si vrai
+	output:
+		* les coordonées sont dans le repère image usuel *
+		x: coordonnée x du coin supérieur gauche de la bounding box (en pixels depuis la bordure gauche de l'image)
+		y: coordonnée y du coin supérieur gauche de la bounding box (en pixels depuis la bordure supérieure de l'image)
+		w: largeur de la bounding box (en pixels)
+		h: hauteur de la bounding box (en pixels)
+	"""
+	# Img = cv2.imread(img)
+	Img = img
+	# get dimensions
+	Img = cv2.imread("cylindre3.jpg")
+	imageHeight, imageWidth, imageChannels = Img.shape)
+	# lire image en HSV
+	hsv = cv2.cvtColor(Img, cv2.COLOR_BGR2HSV)
+
+	# interval HSV of green
+	#(120,100,50)
+	greenLow = (40, 40,40) #(36,0,0)
+	greenUp = (70, 255,255) #(86,255,255)
+
+	#construct a mask
+	mask = cv2.inRange(hsv, greenLow, greenUp)
+
+	#Contours
+	contours= cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)[-2]
+
+	#choisir le contoure a le plus grand surface
+	contour = max(contours, key = cv2.contourArea)
+
+	cv2.drawContours(Img, [contour], -1, 255, -1)
+
+	if disp:
+		cv2.imwrite('detectee.png',Img)
+
+	M = cv2.moments(contour)
+	center  = (M["m10"]/M["m00"],M["m01"]/M["m00"])
+	area = cv2.contourArea(contour)
+
+	x, y, w, h = cv2.boundingRect(contour)
+	return x, y, w, h
 def get_central_point(x,y,w,h):
 	"""
 	input:
@@ -50,12 +102,37 @@ def get_position(img):
 		r, θ: rayon et angle
 	"""
 	_,npx,_ = (cv2.imread(img)).shape
-	x,y,w,h = get_bounding_box(img)
+	x,y,w,h = gepub = Nonet_bounding_box(img)
 	xc,yc = get_central_point(x,y,w,h)
 	theta = get_angle(xc,npx)
 	r = get_radius(w,h)
 	return r,theta
 
+def callback(message):
+	global image, pub,pub2
+	print('entrer dans le callback')
+	#rospy.loginfo(rospy.get_caller_id() + "I heard %s",message.data)
+	#image = np.frombuffer(message.data,dtype=np.uint8).reshape(message.height,message.width,-1)
+
+	np_arr = np.fromstring(message.data,np.uint8)
+	image = cv2.imdecode(np_arr,cv2.IMREAD_COLOR)
+
+	x,y,w,h = get_bounding_box(image, True)
+	r,theta = get_position(img)
+
+	mydistance = Float64
+	mydistance.data = r
+	pub.publish(mydistance)
+
+	myorientation = Float64
+	myorientation.data = theta
+	pub2.publish(myorientation)
+def listener():
+	global pub,pub2
+	rospy.init_node('listener', anonymous=True)
+	rospy.Subscriber('/main_camera/image_raw/compressed',CompressedImage,callback)
+	pub = rospy.Publisher("DISTANCE", Float64)
+	pub2 = rospy.Publisher("ORIENTATION", Float64)
 # p1 = (330,70)
 # p2 = (611,866)
 
@@ -75,9 +152,5 @@ def get_position(img):
 # print(r,theta)
 
 if __name__ == "__main__":
-	img = "cylindre3.jpg"
-	# 
-	x,y,w,h = get_bounding_box(img, False)
-	print(x, y, w, h)
-	r,theta = get_position(img)
-	print(r,theta)
+	listener()
+	rospy.spin()
