@@ -41,7 +41,8 @@ if __name__ == '__main__':
 	rospy.init_node('Grass_position')
 	print("estimator grass position")
 	Grass = Grass_position()
-	not rospy.is_shutdown():
+	r = rospy.Rate(10)
+	while not rospy.is_shutdown():
 	 	Grass.get_position()
+		r.sleep()
 	rospy.spin()
-	

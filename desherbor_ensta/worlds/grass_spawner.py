@@ -23,7 +23,7 @@ rospy.wait_for_service('/gazebo/spawn_sdf_model')
 
 gazeboSpawnModel = rospy.ServiceProxy("/gazebo/spawn_sdf_model", SpawnModel)
 
-pubHerbe = rospy.Publisher('/Les_Herbes', std_msgs.msg.String)
+#pubHerbe = rospy.Publisher('/Les_Herbes', std_msgs.msg.String)
 
 HerbeX =0
 HerbeY =0
