@@ -56,6 +56,9 @@ def get_bounding_box(img,disp = False):
 		area = cv2.contourArea(contour)
 
 		x, y, w, h = cv2.boundingRect(contour)
+	else :
+		rospy.loginfo("Pas d'herbe détectée")
+		x,y,w,h =0,0,0,0
 	return x, y, w, h
 
 def get_central_point(x,y,w,h):
@@ -90,7 +93,8 @@ def get_radius(w,h,c=1):
 		w,h: largeur et hauteur de la bounding box
 		c: une constante
 	output:
-		r: distance séparant l'herbe du robot
+		r: distance s	input:
+éparant l'herbe du robot
 	"""
 	r = w*h/c
 	return r
@@ -104,8 +108,9 @@ def get_position(img):
 	output:
 		r, θ: rayon et angle
 	"""
-	_,npx,_ = (cv2.imread(img)).shape
-	x,y,w,h = gepub = Nonet_bounding_box(img)
+	_,npx,_ = img.shape
+	#_,npx,_ = (cv2.imread(img)).shape
+	x,y,w,h = get_bounding_box(img)
 	xc,yc = get_central_point(x,y,w,h)
 	theta = get_angle(xc,npx)
 	r = get_radius(w,h)
@@ -121,7 +126,7 @@ def callback(message):
 	image = cv2.imdecode(np_arr,cv2.IMREAD_COLOR)
 
 	x,y,w,h = get_bounding_box(image, True)
-	r,theta = get_position(img)
+	r,theta = get_position(image)
 	print(r,theta)
 
 	mydistance = Float64
@@ -131,12 +136,16 @@ def callback(message):
 	myorientation = Float64
 	myorientation.data = theta
 	pub2.publish(myorientation)
+
 def listener():
 	global pub,pub2
+	print("entrée listener")
 	rospy.init_node('listener', anonymous=True)
 	rospy.Subscriber('/main_camera/image_raw/compressed',CompressedImage,callback)
 	pub = rospy.Publisher("DISTANCE", Float64,queue_size=10)
+	print("pub publiée")
 	pub2 = rospy.Publisher("ORIENTATION", Float64,queue_size=10)
+	print("pub2 publiée")
 # p1 = (330,70)
 # p2 = (611,866)
 
@@ -156,5 +165,6 @@ def listener():
 # print(r,theta)
 
 if __name__ == "__main__":
+	print("entrée dans le main")
 	listener()
 	rospy.spin()
