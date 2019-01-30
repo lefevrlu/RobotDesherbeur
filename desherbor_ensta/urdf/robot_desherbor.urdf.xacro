@@ -24,14 +24,14 @@
 
   <link name="chassis">
     <collision>
-      <origin xyz="0 0 .1" rpy="0 0 0"/>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
       <geometry>
         <box size="0.3 0.3 0.1"/>
       </geometry>
     </collision>
 
     <visual>
-      <origin xyz="0 0 .1" rpy="0 0 0"/>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
       <geometry>
         <box size="0.1 0.3 0.1"/>
       </geometry>
@@ -208,7 +208,7 @@
     </visual>
     <xacro:default_inertial mass="0.01"/>
   </link>
-  
+
   <joint name="camera_hinge" type="fixed">
     <child link="camera"/>
     <parent link="arm"/>
