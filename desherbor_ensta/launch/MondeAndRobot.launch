@@ -14,9 +14,11 @@
 <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
   <remap from="joint_states" to="/desherbor_ensta/joint_states"/>
 </node>
+
 <node name="grass_spawner" pkg="desherbor_ensta" type="grass_spawner.py" output="screen">
   <param name="chemin" value="$(find desherbor_ensta)/models/Herbe/model.sdf"/>
   <param name="NbHerbe" value="25"/>
 </node>
 
+<node name="detection" pkg="desherbor_ensta" type="herb_position.py" output="screen"/>
 </launch>

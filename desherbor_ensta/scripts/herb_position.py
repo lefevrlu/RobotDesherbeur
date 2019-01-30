@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import cv2
@@ -25,7 +26,6 @@ def get_bounding_box(img,disp = False):
 	# Img = cv2.imread(img)
 	Img = img
 	# get dimensions
-	Img = cv2.imread("cylindre3.jpg")
 	imageHeight, imageWidth, imageChannels = Img.shape
 	# lire image en HSV
 	hsv = cv2.cvtColor(Img, cv2.COLOR_BGR2HSV)
@@ -42,19 +42,22 @@ def get_bounding_box(img,disp = False):
 	contours= cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)[-2]
 
 	#choisir le contoure a le plus grand surface
-	contour = max(contours, key = cv2.contourArea)
+	if len(contours)!=0 :
 
-	cv2.drawContours(Img, [contour], -1, 255, -1)
+		contour = max(contours, key = cv2.contourArea)
 
-	if disp:
-		cv2.imwrite('detectee.png',Img)
+		cv2.drawContours(Img, [contour], -1, 255, -1)
 
-	M = cv2.moments(contour)
-	center  = (M["m10"]/M["m00"],M["m01"]/M["m00"])
-	area = cv2.contourArea(contour)
+		if disp:
+			cv2.imwrite('detectee.png',Img)
 
-	x, y, w, h = cv2.boundingRect(contour)
+		M = cv2.moments(contour)
+		center  = (M["m10"]/M["m00"],M["m01"]/M["m00"])
+		area = cv2.contourArea(contour)
+
+		x, y, w, h = cv2.boundingRect(contour)
 	return x, y, w, h
+
 def get_central_point(x,y,w,h):
 	"""
 	input:
