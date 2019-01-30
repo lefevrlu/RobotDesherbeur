@@ -6,7 +6,7 @@
     <material>Gazebo/FlatBlack</material>
     <sensor type="ray" name="lidar_sensor">
       <pose>0 0 0 0 0 0</pose>
-      <visualize>false</visualize>
+      <visualize>true</visualize>
       <update_rate>5</update_rate>
       <ray>
         <scan>
@@ -35,5 +35,7 @@
       </plugin>
     </sensor>
   </gazebo>
-  
+
+
+
 </robot>
