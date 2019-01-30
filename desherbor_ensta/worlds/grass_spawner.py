@@ -4,7 +4,7 @@ import rospy
 from gazebo_msgs.srv import SpawnModel, SpawnModelRequest,DeleteModel
 import random
 import numpy as np
-import std_msgs
+import std_msgs.msg
 from geometry_msgs.msg import Point
 
 rospy.init_node("grass_spawner")
@@ -25,11 +25,17 @@ gazeboSpawnModel = rospy.ServiceProxy("/gazebo/spawn_sdf_model", SpawnModel)
 
 pubHerbe = rospy.Publisher('/Les_Herbes', std_msgs.msg.String)
 
+HerbeX =0
+HerbeY =0
+HerbeZ =0
+
+
 Name = []
 X=[]
 Y=[]
 Rayon=[]
 HerbesStr = ""
+
 for i in range(NbHerbe):
     x = 10 * random.random() -5
     y = 10 * random.random()- 5
@@ -67,59 +73,78 @@ def distance(xherb,yherb,xest,yest):
     return np.sqrt((xherb-xest)**2+(yherb-yest)**2)
 
 def callback(data):
-     global filesdf
-     global strdebase
-     global strcolorbase
+     global HerbeX
+     global HerbeY
+     global Herbey
+
      rospy.loginfo("I heard %s",data.x)
-     print(data.x)
-     print(data.y)
-     print(data.z)
-     dist = []
-     for i in range(NbHerbe):
-         dist.append(distance(X[i],Y[i],data.x,data.y))
-     dist_min = min(dist)
-     print("distance minimun ="+str(dist_min))
-     ind_min = dist.index(dist_min)
-     #destruction
-     rospy.wait_for_service('/gazebo/delete_model')
-     gazeboDeleteModel = rospy.ServiceProxy("/gazebo/delete_model", DeleteModel)
+     HerbeX = data.x
+     HerbeY = data.y
+     HerbeZ = data.z
 
-     requestDel = "Grass"+str(ind_min)
-     gazeboDeleteModel(requestDel)
 
-     #respawn
-     #requestRespawn
+def destroy(data):
+    global filesdf
+    global strdebase
+    global strcolorbase
 
-     strtochange = "<radius>"+str(Rayon[ind_min])+"</radius>"
-     filesdf = filesdf.replace(strdebase,strtochange)
-     strdebase = strtochange
+    global HerbeX
+    global HerbeY
+    global Herbey
+    dist = []
 
-     strambientochange = "<ambient> 0 0 0 1</ambient>"
-     strambiantbefore = "<ambient> 0.3 1 0.3 1</ambient>"
+    DistanceMaxSuppression =0.2
 
-     strcolorchange = "<diffuse>0 0 0 1</diffuse>"
-     filesdf = filesdf.replace(strcolorbase,strcolorchange)
-     strcolorbase = strcolorchange
+    for i in range(NbHerbe):
+        dist.append(distance(X[i],Y[i],HerbeX,HerbeY))
+    dist_min = min(dist)
+    print("distance minimun ="+str(dist_min))
+    if dist_min<DistanceMaxSuppression:
+        ind_min = dist.index(dist_min)
 
-     filesdf = filesdf.replace(strambiantbefore,strambientochange)
+        #destruction
+        rospy.wait_for_service('/gazebo/delete_model')
+        gazeboDeleteModel = rospy.ServiceProxy("/gazebo/delete_model", DeleteModel)
 
-     requestRespawn = SpawnModelRequest()
-     requestRespawn.model_name = "Grass"+str(ind_min)
-     requestRespawn.model_xml = filesdf
-     requestRespawn.robot_namespace = "Herbe"+str(ind_min)
-     requestRespawn.initial_pose.position.x = X[ind_min]
-     requestRespawn.initial_pose.position.y = Y[ind_min]
-     requestRespawn.initial_pose.position.z = 0
-     requestRespawn.initial_pose.orientation.x = 0
-     requestRespawn.initial_pose.orientation.y = 0
-     requestRespawn.initial_pose.orientation.z = 0
-     requestRespawn.initial_pose.orientation.w = 1.0
+        requestDel = "Grass"+str(ind_min)
+        gazeboDeleteModel(requestDel)
 
-     gazeboSpawnModel(requestRespawn)
+        #respawn
+        #requestRespawn
 
+        strtochange = "<radius>"+str(Rayon[ind_min])+"</radius>"
+        filesdf = filesdf.replace(strdebase,strtochange)
+        strdebase = strtochange
+
+        strambientochange = "<ambient> 0 0 0 1</ambient>"
+        strambiantbefore = "<ambient> 0.3 1 0.3 1</ambient>"
+
+        strcolorchange = "<diffuse>0 0 0 1</diffuse>"
+        filesdf = filesdf.replace(strcolorbase,strcolorchange)
+        strcolorbase = strcolorchange
+
+        filesdf = filesdf.replace(strambiantbefore,strambientochange)
+
+        requestRespawn = SpawnModelRequest()
+        requestRespawn.model_name = "Grass"+str(ind_min)
+        requestRespawn.model_xml = filesdf
+        requestRespawn.robot_namespace = "Herbe"+str(ind_min)
+        requestRespawn.initial_pose.position.x = X[ind_min]
+        requestRespawn.initial_pose.position.y = Y[ind_min]
+        requestRespawn.initial_pose.position.z = 0
+        requestRespawn.initial_pose.orientation.x = 0
+        requestRespawn.initial_pose.orientation.y = 0
+        requestRespawn.initial_pose.orientation.z = 0
+        requestRespawn.initial_pose.orientation.w = 1.0
+
+        gazeboSpawnModel(requestRespawn)
+    else :
+        print "C'est bien trop loin"
 
 def listener():
     rospy.Subscriber("/HerbePos", Point, callback)
+
+    rospy.Subscriber("/Destroy",std_msgs.msg.Empty, destroy)
      # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 
