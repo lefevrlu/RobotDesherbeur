@@ -69,23 +69,30 @@ def movement_policy(position,destination):
     """
     x,y = position
     u1,u2 = destination
-    ε = 1 # seuil de tolérance en distance
+    eps = 1 # seuil de tolérance en distance
 
-    θ_hat = get_angle(position,destination)
-    orientation_roues(θ_hat)
-    if (x-u1)**2 + (y-u2)**2 > ε: # si on est trop loin de l'herbe on avance
+    theta_hat = get_angle(position,destination)
+    orientation_roues(theta_hat)
+    if (x-u1)**2 + (y-u2)**2 > eps: # si on est trop loin de l'herbe on avance
         change_wheel_speed(1)
     else:
         change_wheel_speed(0)
 
+def tourner_en_rond():
+    orientation_roue_gauche(0)
+    change_wheel_speed(1)
+    orientation_roue_droite(30)
 
 
 if __name__ == '__main__':
+    while(1):
+        rospy.init_node('commande')
+        tourner_en_rond()
     # rospy.init_node('commande')
     # rospy.Subscriber("/topic", Float64MultiArray, movement_policy)
-    x = (0,0)
-    y = (0,-1)
-    print(atan2(y[1]-x[1],y[0]-x[0]))
+    #x = (0,0)
+    #y = (0,-1)
+    #print(atan2(y[1]-x[1],y[0]-x[0]))
     # while(1):
     #     roulement_roue_gauche()
     #     avancer()
