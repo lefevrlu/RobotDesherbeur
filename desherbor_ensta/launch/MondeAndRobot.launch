@@ -1,6 +1,7 @@
 <launch>
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <args name="first_world" value="worlds/willowgarage.world"/>
+    <arg name="world_name" value="$(find desherbor_ensta)/worlds/Cour.world"/>
+    <arg name="paused" value="true"/>
   </include>
 
 <param name="robot_description" command="$(find xacro)/xacro --inorder $(find desherbor_ensta)/urdf/robot_desherbor.urdf.xacro"/>
@@ -14,4 +15,10 @@
   <remap from="joint_states" to="/desherbor_ensta/joint_states"/>
 </node>
 
+<node name="grass_spawner" pkg="desherbor_ensta" type="grass_spawner.py" output="screen">
+  <param name="chemin" value="$(find desherbor_ensta)/models/Herbe/model.sdf"/>
+  <param name="NbHerbe" value="25"/>
+</node>
+
+<node name="detection" pkg="desherbor_ensta" type="herb_position.py" output="screen"/>
 </launch>
