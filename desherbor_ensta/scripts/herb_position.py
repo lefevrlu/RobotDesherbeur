@@ -33,8 +33,8 @@ def get_bounding_box(img,disp = False):
 
 	# interval HSV of green
 	#(120,100,50)
-	greenLow = (10, 10, 10) #(36,0,0)
-	greenUp = (70, 255,255) #(86,255,255)
+	greenLow = (50, 100, 100) #(36,0,0)
+	greenUp = (75, 255, 255) #(86,255,255)
 
 	#construct a mask
 	mask = cv2.inRange(hsv, greenLow, greenUp)
@@ -46,7 +46,14 @@ def get_bounding_box(img,disp = False):
 	if len(contours)!=0 :
 		# rospy.loginfo("Herbe détectée")
 
-		contour = max(contours, key = cv2.contourArea)
+		contour = contours[0]
+		for c in contours:
+			x,y,w,h = cv2.boundingRect(contour)
+			x1,y1,w1,h1 = cv2.boundingRect(c)
+			if h1 > h:
+				contour = c
+
+		# contour = max(contours, key = cv2.contourArea)
 
 		cv2.drawContours(Img, [contour], -1, 255, -1)
 
@@ -61,6 +68,7 @@ def get_bounding_box(img,disp = False):
 		# area = cv2.contourArea(contour)
 
 		x, y, w, h = cv2.boundingRect(contour)
+		print(x,y,w,h)
 	else :
 		x,y,w,h =0,0,0,0
 	return x, y, w, h
@@ -88,19 +96,16 @@ def get_angle(xc,npx,a = 90, b = 0):
 	theta = a*(xc-npx/2)/npx + b # angle en coordonnées polaire dans le repère du robot
 	return theta
 
-def get_radius(w,h,c=1):
+def get_radius(h,c=45.0):
 	"""
 	calcule la distance de l'herbe au robot
-	fonction linéaire de la surface de la bounding box
-	r = S/c
 	input:
-		w,h: largeur et hauteur de la bounding box
-		c: une constante
+		h: hauteur de la bounding box
+		c: constante dépendant du nombre de pixels de la caméra et de la hauteur de l'herbe
 	output:
-		r: distance s	input:
-éparant l'herbe du robot
+		r: distance s
 	"""
-	r = h/c
+	r = c/h
 	return r
 
 def get_position(img):
@@ -117,7 +122,7 @@ def get_position(img):
 	x,y,w,h = get_bounding_box(img)
 	xc,yc = get_central_point(x,y,w,h)
 	theta = get_angle(xc,npx)
-	r = get_radius(w,h)
+	r = get_radius(h)
 	return r,theta
 
 def callback(message):
@@ -129,7 +134,7 @@ def callback(message):
 	np_arr = np.fromstring(message.data,np.uint8)
 	image = cv2.imdecode(np_arr,cv2.IMREAD_COLOR)
 
-	x,y,w,h = get_bounding_box(image, True)
+	# x,y,w,h = get_bounding_box(image, True)
 	r,theta = get_position(image)
 	print(r,theta)
 
