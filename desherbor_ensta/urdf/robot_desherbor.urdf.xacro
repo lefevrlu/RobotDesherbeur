@@ -270,7 +270,7 @@
     <joint name="left_bottom_wheel_hinge">
       <hardwareInterface> EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="bottom_wheel_actuator">
+    <actuator name="left_bottom_wheel_actuator">
       <mechanicalReduction>10</mechanicalReduction>
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </actuator>
@@ -281,7 +281,7 @@
     <joint name="right_bottom_wheel_hinge">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="bottom_wheel_actuator">
+    <actuator name="right_bottom_wheel_actuator">
       <mechanicalReduction>10</mechanicalReduction>
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </actuator>
@@ -292,7 +292,7 @@
     <joint name="left_top_wheel_hinge">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="righttop_wheel_actuator">
+    <actuator name="right_top_wheel_actuator">
       <mechanicalReduction>30</mechanicalReduction>
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </actuator>
@@ -303,7 +303,7 @@
     <joint name="right_top_wheel_hinge">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="top_wheel_actuator">
+    <actuator name="left_top_wheel_actuator">
       <mechanicalReduction>30</mechanicalReduction>
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </actuator>
