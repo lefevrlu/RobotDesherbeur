@@ -103,10 +103,12 @@ def get_radius(h,c=45.0):
 		h: hauteur de la bounding box
 		c: constante dépendant du nombre de pixels de la caméra et de la hauteur de l'herbe
 	output:
-		r: distance s
+		distance à l'herbe en unité gazebo
 	"""
-	r = c/h
-	return r
+	if h != 0:
+		return c/h
+	else:
+		return 0
 
 def get_position(img):
 	"""
@@ -136,15 +138,10 @@ def callback(message):
 
 	# x,y,w,h = get_bounding_box(image, True)
 	r,theta = get_position(image)
-	print(r,theta)
+	# print(r,theta)
 
-	mydistance = Float64
-	mydistance.data = r
-	pub.publish(mydistance)
-
-	myorientation = Float64
-	myorientation.data = theta
-	pub2.publish(myorientation)
+	pub.publish(Float64(r))
+	pub2.publish(Float64(theta))
 
 def listener():
 	global pub,pub2
@@ -173,7 +170,34 @@ def listener():
 # theta = aa*(x1+(x2-x1)/2-npx/2) + ba # angle en coordonnées polaire dans le repère du robot
 # print(r,theta)
 
+def main(publishers):
+	pub1 = publishers["rayon"]
+	pub2 = publishers["theta"]
+	pub3 = publishers["commande bras"]
+	pub4 = publishers["destroy"]
+	pub5 = publishers["commande angle roue gauche"]
+	pub6 = publishers["commande angle roue droite"]
+	pub7 = publishers["commande vitesse roue gauche"]
+	pub8 = publishers["commande vitesse roue droite"]
+	if herbe_vue:
+		# publish r theta :		commande effectué automatiquement
+		pub1.publish()
+		pub2.publish()
+		if r petit:
+			publish commande bras:		commande bras effectuée
+			sleep()
+			publish destroy
+	else:
+		rotation sur soi meme
+		creeer une fonction qui publish les commandes au roues
+
 if __name__ == "__main__":
+	
+    rospy.init_node('commande')
+    pub_left_speed = rospy.Publisher('/desherbor_ensta/joint_left_bottom_wheel/command', Float64, queue_size = 1)
+    pub_right_speed = rospy.Publisher('/desherbor_ensta/joint_right_bottom_wheel/command', Float64, queue_size = 1)
+    pub_left_angle = rospy.Publisher('/desherbor_ensta/joint_left_top_wheel/command', Float64, queue_size = 1)
+    pub_right_angle = rospy.Publisher('/desherbor_ensta/joint_right_top_wheel/command', Float64, queue_size = 1)
 	print("entrée dans le main")
 	listener()
 	rospy.spin()
