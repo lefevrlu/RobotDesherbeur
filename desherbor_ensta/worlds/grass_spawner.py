@@ -4,6 +4,7 @@ import rospy
 from gazebo_msgs.srv import SpawnModel, SpawnModelRequest
 import random
 import numpy as np
+import std_msgs
 
 rospy.init_node("grass_spawner")
 
@@ -19,7 +20,7 @@ rospy.wait_for_service('/gazebo/spawn_sdf_model')
 
 gazeboSpawnModel = rospy.ServiceProxy("/gazebo/spawn_sdf_model", SpawnModel)
 
-#pubHerbe = rospy.Publisher('Les_Herbes', std_msgs.msg.String, queue_size=10)
+pubHerbe = rospy.Publisher('/Les_Herbes', std_msgs.msg.String)
 
 Name = []
 X=[]
@@ -33,10 +34,10 @@ for i in range(NbHerbe):
 
     X.append(x)
     Y.append(y)
-    Rayon.append(Rayon)
+    Rayon.append(rayon)
     Name.append("Grass"+str(i))
 
-    #Création aléatoire d'herbe.{value for value in variable}
+    #Creation aleatoire d'herbe.{value for value in variable}
     strtochange = "<radius>"+str(rayon)+"</radius>"
     filesdf = filesdf.replace(strdebase,strtochange)
     strdebase = strtochange
@@ -53,12 +54,13 @@ for i in range(NbHerbe):
     request.initial_pose.orientation.w = 1.0
     response = gazeboSpawnModel(request)
 
-    HerbesStr = "Grass"+str(i)+"\n"
-                +str(x) +"\n"
-                +str(y)+"\n"
-                +str(Rayon)+"\n"
-    print(HerbesStr)
+    Herbe = "Grass"+str(i)+" "+str(x) +" "+str(y)+" "+str(rayon)+" "
+    HerbesStr+=Herbe
 
-print(HerbeStr)
-#pubHerbe.publish(HerbeStr)
-#rossrv info SpawnModel
+# print(HerbesStr)
+r = rospy.Rate(2)
+#print(rospy.is_shutdown())
+while not rospy.is_shutdown():
+    pubHerbe.publish(std_msgs.msg.String(HerbesStr))
+    r.sleep()
+    #rossrv info SpawnModel
