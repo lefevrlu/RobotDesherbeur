@@ -50,7 +50,7 @@ for i in range(NbHerbe):
     request.robot_namespace = "Herbe"+str(i)
     request.initial_pose.position.x = x
     request.initial_pose.position.y = y
-    request.initial_pose.position.z = 0
+    request.initial_pose.position.z = 0.05
     request.initial_pose.orientation.x = 0
     request.initial_pose.orientation.y = 0
     request.initial_pose.orientation.z = 0
