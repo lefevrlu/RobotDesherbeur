@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import cv2
 import rospy
 import roslib
@@ -25,14 +26,14 @@ def get_bounding_box(img,disp = False):
 	"""
 	# Img = cv2.imread(img)
 	Img = img
-	# get dimensions
+	# get dimensionsImg
 	imageHeight, imageWidth, imageChannels = Img.shape
 	# lire image en HSV
 	hsv = cv2.cvtColor(Img, cv2.COLOR_BGR2HSV)
 
 	# interval HSV of green
 	#(120,100,50)
-	greenLow = (40, 40,40) #(36,0,0)
+	greenLow = (10, 10, 10) #(36,0,0)
 	greenUp = (70, 255,255) #(86,255,255)
 
 	#construct a mask
@@ -43,21 +44,24 @@ def get_bounding_box(img,disp = False):
 
 	#choisir le contoure a le plus grand surface
 	if len(contours)!=0 :
+		# rospy.loginfo("Herbe détectée")
 
 		contour = max(contours, key = cv2.contourArea)
 
 		cv2.drawContours(Img, [contour], -1, 255, -1)
 
-		if disp:
-			cv2.imwrite('detectee.png',Img)
+		# if disp:
+		dirPath = os.path.dirname(__file__)
+		cv2.imwrite(os.path.join(dirPath,'detectee.png'),Img)
+		cv2.imshow('camera',Img)
+		cv2.waitKey(1)
 
 		M = cv2.moments(contour)
-		center  = (M["m10"]/M["m00"],M["m01"]/M["m00"])
-		area = cv2.contourArea(contour)
+		# center  = (M["m10"]/M["m00"],M["m01"]/M["m00"])
+		# area = cv2.contourArea(contour)
 
 		x, y, w, h = cv2.boundingRect(contour)
 	else :
-		rospy.loginfo("Pas d'herbe détectée")
 		x,y,w,h =0,0,0,0
 	return x, y, w, h
 
@@ -72,7 +76,7 @@ def get_central_point(x,y,w,h):
 	yc = y + h//2
 	return xc, yc
 
-def get_angle(xc,npx,a = 1, b = 0):
+def get_angle(xc,npx,a = 90, b = 0):
 	"""
 	input:
 		xc: coordonnée x du centre de l'herbe
@@ -81,7 +85,7 @@ def get_angle(xc,npx,a = 1, b = 0):
 	output:
 		θ: angle par rapport au centre de l'image
 	"""
-	theta = a*(xc-npx/2) + b # angle en coordonnées polaire dans le repère du robot
+	theta = a*(xc-npx/2)/npx + b # angle en coordonnées polaire dans le repère du robot
 	return theta
 
 def get_radius(w,h,c=1):
@@ -96,7 +100,7 @@ def get_radius(w,h,c=1):
 		r: distance s	input:
 éparant l'herbe du robot
 	"""
-	r = w*h/c
+	r = h/c
 	return r
 
 def get_position(img):
