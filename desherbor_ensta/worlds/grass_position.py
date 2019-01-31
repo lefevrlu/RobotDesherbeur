@@ -7,41 +7,41 @@ from std_msgs.msg import Float64, Point
 estimation de position d'un herb par rapport au repère global aprés le detecté et calibré de la camera
 """
 
-def callback_distance_herb(message):
-	distance_herb = message.data
-	return distance_herb
+class Grass_position():
 
-def callback_theta(message):
-	theta = message.data
-	return theta
+	def __init__(self):
+		self.distance_herb = 0.0
+		self.theta_herb = 0.0
+		self.position_robot = (0.0,0.0,0.0,0.0)
+		self.pub = rospy.Publisher("Grass_position", Point,queue_size=10)
+		rospy.Subscriber("DISTANCE", Float64, self.callback_distance_herb)
+		rospy.Subscriber("ORIENTATION", Float64, self.callback_theta)
+		rospy.Subscriber("/desherbor_ensta/position", Float64, self.callback_robot)
 
-def callback_robot(message):
-	robot_position = message.data
-	return robot_position
+	def callback_distance_herb(self, message):
+		self.distance_herb = message
 
+	def callback_theta(self, message):
+		self.theta_herb = message
 
-def Grass_position():
-	rospy.init_node('Grass_position', anonymous=True)
+	def callback_robot(self, message):
+		self.robot_position = message
 
-	distance_herb = rospy.Subscriber("DISTANCE", Float64, callback_distance_herb)
-	theta = rospy.Subscriber("ORIENTATION", Float64, callback_theta)
-	robot_position = rospy.Subscriber("/desherbor_ensta/position", Float64, callback_robot)
+	def get_position():
+		x_grass = self.robot_position[0] + self.distance_herb*math.cos(self.theta)
+		y_grass = self.robot_position[1] + self.distance_herb*math.sin(self.theta)
+		print("position estimé d'herb:",x_grass,y_grass)
 
-	pub = rospy.Publisher("Grass_position", Point,queue_size=10)
-	
-	x_grass = robot_position[0] + distance_herb*math.cos(theta)
-	y_grass = robot_position[1] + distance_herb*math.sin(theta)
-	
-	print("position estimé d'herb:",x_grass,y_grass)
+		position_grass = Point
+		position_grass.data = Point(x_grass,y_grass,0.0)
+		self.pub.publish(position_grass)
 
-	position_grass = point
-	position_grass.data = Point(x_grass,y_grass,0.0)
-	pub.publish(position_grass)
-	
-	
 
 if __name__ == '__main__':
-	print("estimator position")
-	Grass_position()
+	rospy.init_node('Grass_position')
+	print("estimator grass position")
+	Grass = Grass_position()
+	not rospy.is_shutdown():
+	 	Grass.get_position()
 	rospy.spin()
 	

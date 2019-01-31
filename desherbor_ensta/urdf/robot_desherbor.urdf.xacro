@@ -120,18 +120,18 @@
 
   <joint type="revolute" name="left_top_wheel_hinge">
     <origin xyz="0.1 0.13 0.1" rpy="0 0 0"/>
-    <child link="left_top_wheel"/>
+    <child link="free_left"/>
     <parent link="chassis"/>
     <axis xyz="0 0 1"/>
-    <limit effort="1000.0" lower="-0.78" upper="0.78" velocity="1.0" />
+    <limit effort="1000.0" lower="-0.78" upper="0.78" velocity="10.0" />
   </joint>
 
   <joint type="revolute" name="right_top_wheel_hinge">
     <origin xyz="0.1 -0.13 0.1" rpy="0 0 0"/>
-    <child link="right_top_wheel"/>
+    <child link="free_right"/>
     <parent link="chassis"/>
     <axis xyz="0 0 1"/>
-    <limit effort="1000.0" lower="-0.78" upper="0.78" velocity="1.0" />
+    <limit effort="1000.0" lower="-0.78" upper="0.78" velocity="10.0" />
   </joint>
 
   <joint type="continuous" name="left_bottom_wheel_hinge">
@@ -147,6 +147,39 @@
     <parent link="chassis"/>
     <axis xyz="0 1 0"/>
   </joint>
+
+  <joint type="continuous" name="free_right_top">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <child link="right_top_wheel"/>
+    <parent link="free_right"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint type="continuous" name="free_left_top">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <child link="left_top_wheel"/>
+    <parent link="free_left"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="free_right">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.01"/>
+      </geometry>
+    </visual>
+    <xacro:default_inertial mass="0.1"/>
+  </link>
+  <link name="free_left">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.01"/>
+      </geometry>
+    </visual>
+    <xacro:default_inertial mass="0.1"/>
+  </link>
 
   <link name="arm">
     <collision>
@@ -203,7 +236,7 @@
 
   <link name="lidar">
     <visual>
-      <origin xyz="0 0 0.075" rpy="0 0 0"/>
+      <origin xyz="0 0 -0.03" rpy="0 0 0"/>
       <geometry>
         <cylinder radius="0.03" length="0.1"/>
       </geometry>
@@ -213,8 +246,8 @@
 
   <joint name="lidar_hinge" type="fixed">
     <child link="lidar"/>
-    <parent link="arm"/>
-    <origin xyz="0 0 0.075" rpy="0 0 0"/>
+    <parent link="chassis"/>
+    <origin xyz="0 0 0.22" rpy="0 0 0"/>
   </joint>
 
     <link name="camera">
@@ -237,8 +270,8 @@
     <joint name="left_bottom_wheel_hinge">
       <hardwareInterface> EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="bottom_wheel_actuator">
-      <mechanicalReduction>50</mechanicalReduction>
+    <actuator name="left_bottom_wheel_actuator">
+      <mechanicalReduction>10</mechanicalReduction>
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </actuator>
   </transmission>
@@ -248,8 +281,8 @@
     <joint name="right_bottom_wheel_hinge">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="bottom_wheel_actuator">
-      <mechanicalReduction>50</mechanicalReduction>
+    <actuator name="right_bottom_wheel_actuator">
+      <mechanicalReduction>10</mechanicalReduction>
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </actuator>
   </transmission>
@@ -259,8 +292,7 @@
     <joint name="left_top_wheel_hinge">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-
-    <actuator name="top_wheel_actuator">
+    <actuator name="right_top_wheel_actuator">
       <mechanicalReduction>30</mechanicalReduction>
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </actuator>
@@ -271,7 +303,7 @@
     <joint name="right_top_wheel_hinge">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="top_wheel_actuator">
+    <actuator name="left_top_wheel_actuator">
       <mechanicalReduction>30</mechanicalReduction>
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </actuator>
@@ -296,7 +328,7 @@
 
   <link name="imu_link">
     <visual>
-      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <origin xyz="0 0 0.01" rpy="0 0 0"/>
       <geometry>
         <cylinder radius="0.01" length="0.01"/>
       </geometry>
