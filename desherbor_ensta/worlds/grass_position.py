@@ -32,8 +32,8 @@ class Grass_position():
 		self.position_robot = message
 
 	def get_position(self):
-		x_grass = self.position_robot.x + self.distance_herb*math.cos(self.theta)
-		y_grass = self.position_robot.y + self.distance_herb*math.sin(self.theta)
+		x_grass = self.position_robot.x + self.distance_herb*math.cos(self.position_robot.theta + self.theta)
+		y_grass = self.position_robot.y + self.distance_herb*math.sin(self.position_robot.theta + self.theta)
 		print("position estime d'herb:",x_grass,y_grass)
 
 		position_grass = Point
