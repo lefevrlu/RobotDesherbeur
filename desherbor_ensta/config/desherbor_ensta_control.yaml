@@ -6,11 +6,11 @@ desherbor_ensta:
   joint_right_top_wheel:
     type: effort_controllers/JointPositionController
     joint: right_top_wheel_hinge
-    pid:  {p: 10.0, i: 0.01, d: 1.0}
+    pid:  {p: 10.0, i: 0.01, d: 0.0}
   joint_left_top_wheel:
     type: effort_controllers/JointPositionController
     joint: left_top_wheel_hinge
-    pid:  {p: 10.0, i: 0.01, d: 1.0}
+    pid:  {p: 10.0, i: 0.01, d: 0.0}
   joint_right_bottom_wheel:
     type: effort_controllers/JointEffortController
     joint: right_bottom_wheel_hinge

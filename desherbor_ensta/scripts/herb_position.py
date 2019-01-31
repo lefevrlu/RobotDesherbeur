@@ -8,9 +8,9 @@ import roslib
 import numpy as np
 
 from sensor_msgs.msg import CompressedImage
-from std_msgs.msg import Float64
+from std_msgs.msg import Float64, Bool
 
-pub, pub2 = None, None
+pub, pub2, pub3 = None, None, None
 
 def get_bounding_box(img,disp = False):
 	"""
@@ -44,6 +44,9 @@ def get_bounding_box(img,disp = False):
 
 	#choisir le contoure a le plus grand surface
 	if len(contours)!=0 :
+		mymessage = Bool()
+		mymessage.data = True
+		pub3.publish(mymessage)
 		# rospy.loginfo("Herbe détectée")
 
 		contour = contours[0]
@@ -70,6 +73,9 @@ def get_bounding_box(img,disp = False):
 		x, y, w, h = cv2.boundingRect(contour)
 		print(x,y,w,h)
 	else :
+		mymessage = Bool()
+		mymessage.data = False
+		pub3.publish(mymessage)
 		x,y,w,h =0,0,0,0
 	return x, y, w, h
 
@@ -103,10 +109,12 @@ def get_radius(h,c=45.0):
 		h: hauteur de la bounding box
 		c: constante dépendant du nombre de pixels de la caméra et de la hauteur de l'herbe
 	output:
-		r: distance s
+		distance à l'herbe en unité gazebo
 	"""
-	r = c/h
-	return r
+	if h != 0:
+		return c/h
+	else:
+		return 0
 
 def get_position(img):
 	"""
@@ -138,23 +146,21 @@ def callback(message):
 	r,theta = get_position(image)
 	print(r,theta)
 
-	mydistance = Float64
-	mydistance.data = r
-	pub.publish(mydistance)
+	pub.publish(Float64(r))
 
-	myorientation = Float64
-	myorientation.data = theta
-	pub2.publish(myorientation)
+	pub2.publish(Float64(theta))
 
 def listener():
 	global pub,pub2
 	print("entrée listener")
-	rospy.init_node('listener', anonymous=True)
+	rospy.init_node('detection', anonymous=True)
 	rospy.Subscriber('/main_camera/image_raw/compressed',CompressedImage,callback)
 	pub = rospy.Publisher("DISTANCE", Float64,queue_size=10)
-	print("pub publiée")
+	print("pub DISTANCE publiée")
 	pub2 = rospy.Publisher("ORIENTATION", Float64,queue_size=10)
-	print("pub2 publiée")
+	print("pub2 ORIENTATION publiée")
+	pub3 = rospy.Publisher("HERBEENVUE", Bool,queue_size=10)
+	print("pub3 HERBEENVUE publiée")
 # p1 = (330,70)
 # p2 = (611,866)
 
