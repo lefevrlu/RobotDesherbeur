@@ -78,38 +78,29 @@ def movement_policy(position,destination):
     else:
         change_wheel_speed(0)
 
-def tourner_en_rond():
-    orientation_roue_gauche(0)
-    change_wheel_speed(1)
-    orientation_roue_droite(30)
-
 
 def commander_vitesse_roues(message, publishers):
     pub1, pub2 = publishers[0],publishers[1]
-    pub1.publish(Float64(data = 1))
-    pub2.publish(Float64(data = 1))
     r = message.data
+    vitesse = 0.5*r + 0.3
     print(r)
-    if r > 0.7:
-        pub1.publish(Float64(data =2))
-        pub2.publish(Float64(data = 2))
-
-    if r > 0.5:
-        pub1.publish(Float64(data =1.5))
-        pub2.publish(Float64(data = 1.5))
-
-    if (r<0.2) and (r>0.1):
-        pub1.publish(Float64(data = 1))
-        pub2.publish(Float64(data = 1))
-    else :
+    if r > 0.167:
+        pub1.publish(Float64(data = 2*vitesse))
+        pub2.publish(Float64(data = 2*vitesse))
+    else:
         pub1.publish(Float64(data = 0))
         pub2.publish(Float64(data = 0))
+
 
 def commander_angle_roues(message, publishers):
     pub1, pub2 = publishers[0],publishers[1]
     theta = -message.data/180*pi
+    # theta = 0.2
+    # print(theta)
     pub1.publish(Float64(data = theta))
     pub2.publish(Float64(data = theta))
+
+
 
 if __name__ == '__main__':
     rospy.init_node('commande')

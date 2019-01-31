@@ -71,7 +71,7 @@ def get_bounding_box(img,disp = False):
 		# area = cv2.contourArea(contour)
 
 		x, y, w, h = cv2.boundingRect(contour)
-		print(x,y,w,h)
+		# print(x,y,w,h)
 	else :
 		mymessage = Bool()
 		mymessage.data = False
@@ -85,7 +85,7 @@ def get_central_point(x,y,w,h):
 		x, y, w, h: comme donnés par get_bounding_box
 	output:
 		xc, yc: les coordonnées du point central
-	"""
+	"""theta_hat
 	xc = x + w//2
 	yc = y + h//2
 	return xc, yc
@@ -99,7 +99,7 @@ def get_angle(xc,npx,a = 90, b = 0):
 	output:
 		θ: angle par rapport au centre de l'image
 	"""
-	theta = a*(xc-npx/2)/npx + b # angle en coordonnées polaire dans le repère du robot
+	theta = a*(xc-npx/2)/npx + b # angle en coordonnées polatheta_hatire dans le repère du robot
 	return theta
 
 def get_radius(h,c=45.0):
@@ -135,11 +135,12 @@ def get_position(img):
 
 def callback(message):
 	global image, pub,pub2
-	print('entrer dans le callback')
+	t = rospy.get_time()
+	# print('entrer dans le callback')
 	#rospy.loginfo(rospy.get_caller_id() + "I heard %s",message.data)
 	#image = np.frombuffer(message.data,dtype=np.uint8).reshape(message.height,message.width,-1)
-
 	np_arr = np.fromstring(message.data,np.uint8)
+
 	image = cv2.imdecode(np_arr,cv2.IMREAD_COLOR)
 
 	# x,y,w,h = get_bounding_box(image, True)
@@ -179,7 +180,34 @@ def listener():
 # theta = aa*(x1+(x2-x1)/2-npx/2) + ba # angle en coordonnées polaire dans le repère du robot
 # print(r,theta)
 
+# def main(publishers):
+# 	pub1 = publishers["rayon"]
+# 	pub2 = publishers["theta"]
+# 	pub3 = publishers["commande bras"]
+# 	pub4 = publishers["destroy"]
+# 	pub5 = publishers["commande angle roue gauche"]
+# 	pub6 = publishers["commande angle roue droite"]
+# 	pub7 = publishers["commande vitesse roue gauche"]
+# 	pub8 = publishers["commande vitesse roue droite"]
+# 	if herbe_vue:
+# 		# publish r theta :		commande effectué automatiquement
+# 		pub1.publish()
+# 		pub2.publish()
+# 		if r petit:
+# 			publish commande bras:		commande bras effectuée
+# 			sleep()
+# 			publish destroy
+# 	else:
+# 		rotation sur soi meme
+# 		creeer une fonction qui publish les commandes au roues
+
 if __name__ == "__main__":
-	print("entrée dans le main")
+
+	# rospy.init_node('commande')
+	# pub_left_speed = rospy.Publisher('/desherbor_ensta/joint_left_bottom_wheel/command', Float64, queue_size = 1)
+	# pub_right_speed = rospy.Publisher('/desherbor_ensta/joint_right_bottom_wheel/command', Float64, queue_size = 1)
+	# pub_left_angle = rospy.Publisher('/desherbor_ensta/joint_left_top_wheel/command', Float64, queue_size = 1)
+	# pub_right_angle = rospy.Publisher('/desherbor_ensta/joint_right_top_wheel/command', Float64, queue_size = 1)
+	# print("entrée dans le main")
 	listener()
 	rospy.spin()
