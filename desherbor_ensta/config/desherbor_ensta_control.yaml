@@ -22,4 +22,4 @@ desherbor_ensta:
   joint_arm:
     type: effort_controllers/JointPositionController
     joint: arm_hinge
-    pid:  {p: 1.0, i: 0.01, d: 0.0}
+    pid:  {p: 1.0, i: 0.01, d: 1.0}

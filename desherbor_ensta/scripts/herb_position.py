@@ -6,7 +6,6 @@ import cv2
 import rospy
 import roslib
 import numpy as np
-from multiprocessing.pool import ThreadPool
 
 from sensor_msgs.msg import CompressedImage
 from std_msgs.msg import Float64
@@ -69,7 +68,7 @@ def get_bounding_box(img,disp = False):
 		# area = cv2.contourArea(contour)
 
 		x, y, w, h = cv2.boundingRect(contour)
-		print(x,y,w,h)
+		# print(x,y,w,h)
 	else :
 		x,y,w,h =0,0,0,0
 	return x, y, w, h
@@ -136,19 +135,7 @@ def callback(message):
 	#image = np.frombuffer(message.data,dtype=np.uint8).reshape(message.height,message.width,-1)
 	np_arr = np.fromstring(message.data,np.uint8)
 
-
-	pool = ThreadPool(processes=1)
-
-	async_result = pool.apply_async(cv2.imdecode, (np_arr, cv2.IMREAD_COLOR)) # tuple of args for foo
-
-	# do some other stuff in the main process
-
-	image = async_result.get()  # get the return value from your function.
-
-
-
-
-	# image = cv2.imdecode(np_arr,cv2.IMREAD_COLOR)
+	image = cv2.imdecode(np_arr,cv2.IMREAD_COLOR)
 
 	# x,y,w,h = get_bounding_box(image, True)
 	r,theta = get_position(image)
@@ -160,13 +147,13 @@ def callback(message):
 
 def listener():
 	global pub,pub2
-	print("entrée listener")
+	# print("entrée listener") # ne se print pas!
 	rospy.init_node('listener', anonymous=True)
 	rospy.Subscriber('/main_camera/image_raw/compressed',CompressedImage,callback, queue_size=2)
 	pub = rospy.Publisher("DISTANCE", Float64,queue_size=10)
-	print("pub publiée")
+	# print("pub publiée")
 	pub2 = rospy.Publisher("ORIENTATION", Float64,queue_size=10)
-	print("pub2 publiée")
+	# print("pub2 publiée")
 # p1 = (330,70)
 # p2 = (611,866)
 

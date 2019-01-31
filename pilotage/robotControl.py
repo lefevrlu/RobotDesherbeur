@@ -84,13 +84,13 @@ def movement_policy(position,destination):
 
 def commander_vitesse_roues(message, publishers):
     pub1, pub2 = publishers[0],publishers[1]
-    vitesse = 1
     r = message.data
-    if r > 0.5:
-        pub1.publish(Float64(data = vitesse))
-        pub2.publish(Float64(data = vitesse))
+    vitesse = 0.5*r + 0.3
+    print(r)
+    if r > 0.167:
+        pub1.publish(Float64(data = 2*vitesse))
+        pub2.publish(Float64(data = 2*vitesse))
     else:
-        print('a')
         pub1.publish(Float64(data = 0))
         pub2.publish(Float64(data = 0))
 
