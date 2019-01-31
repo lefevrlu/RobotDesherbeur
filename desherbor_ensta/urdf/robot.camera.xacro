@@ -4,11 +4,7 @@
   <!-- ENTER REFERENCE NAME -->
   <gazebo reference="camera">
     <sensor type="camera" name="main_camera">
-<<<<<<< HEAD
-      <update_rate>5.0</update_rate>
-=======
       <update_rate>20.0</update_rate>
->>>>>>> master
       <camera name="head">
         <horizontal_fov>1.3962634</horizontal_fov>
         <image>
